@@ -165,7 +165,7 @@ void createNewAcc(int choice)
 
 		printf("\t\tThis is YOUR Account Number: %d\n",newuser->accnumber);
 		printf("\t\t==========================================\n");
-		printf("\t\tName      : %s",newuser->name);
+		printf("\t\tName      : %s\n",newuser->name);
 		printf("\t\tNIC       : %s\n",newuser->NIC);
 		printf("\t\tEmail     : %s\n",newuser->email);
 		printf("\t\tUsername  : %s\n",newuser->username);
