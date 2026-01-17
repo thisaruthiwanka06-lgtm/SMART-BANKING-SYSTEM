@@ -17,6 +17,7 @@ struct newUserAcc{
 void maininterface(int choice);
 void createNewAcc(int choice);
 void newSavingacc(struct newUserAcc *newuser);
+int findDuplicate(char *searchstr);
 
    
     int firstchoice;
@@ -105,8 +106,17 @@ void createNewAcc(int choice)
 
 }
 
- void newSavingacc(struct newUserAcc *newuser)
+void newSavingacc(struct newUserAcc *newuser)
 	{
+		
+		FILE *fpr;
+		fpr=fopen("accDetails.txt","a");
+			
+		if(fpr==NULL)
+		{
+			printf("file cannot created!!");
+		}
+		
 		srand(time(NULL));
 		
 		newuser->accnumber=(rand()%900000)+100000;
@@ -119,7 +129,8 @@ void createNewAcc(int choice)
    
     printf("\t\tEnter Your Name      : ");
     fgets(newuser->name,50,stdin);
-    newuser->name[strcspn(newuser->name, "\n")] = 0;
+	
+	newuser->name[strcspn(newuser->name,"\n")]=0;
     
 	do{
 		 printf("\n\t\tEnter Your NIC       : ");
@@ -128,9 +139,18 @@ void createNewAcc(int choice)
 			{
 				printf("\n\t\tError: NIC do not match. Please try again.\n");
 			}
+		else if(findDuplicate(newuser->NIC))
+			{
+					printf("\t\tError: NIC already exists!\n");
+					newuser->NIC[0] = '\0'; 
+			}
+			
+			
 		}while(strlen(newuser->NIC)!=12 && strlen(newuser->NIC)!=10);
 	
-
+   
+		
+		
     printf("\n\t\tEnter Your Email     : ");
     scanf("%s",newuser->email);
     printf("\n\t\tEnter Your Username  : ");
@@ -146,6 +166,7 @@ void createNewAcc(int choice)
 		{
 			printf("\n\t\tError: Passwords do not match. Please try again.\n");
 		}
+		
 		
 	}while(strcmp(newuser->password,newuser->C_password)!=0);
     
@@ -175,5 +196,41 @@ void createNewAcc(int choice)
 		printf("\t\t      Account Registered Successfully!\n");
 		printf("\t\t==========================================\n");	
 	
+	
+		fseek(fpr,0,SEEK_END);
+		if(ftell(fpr)==0)
+		{
+			fprintf(fpr, "%-15s %-15s %-15s %-25s %-15s\n", 
+        "ACCOUNT_NO", "Username", "Password", "ACCOUNT_Name", "NIC");
+		}
+		
+		fprintf(fpr,"%-15d %-15s %-15s %-25s %-15s\n"
+        ,newuser->accnumber,newuser->username,newuser->password,newuser->name,newuser->NIC);
+
+        fclose(fpr);
+        maininterface(firstchoice);
 	}
+	
+		int findDuplicate(char *searchstr)
+		{
+			FILE *fpr=fopen("accDetails.txt","r");
+			
+			if(fpr==NULL)
+			{
+				printf("flie cannot open!!!");
+			}
+			
+			char temp[100];
+			
+			while(fscanf(fpr,"%s",temp)!=EOF)
+			{
+				if(strcmp(temp,searchstr)==0)
+				{
+					fclose(fpr);
+				return 1;
+				}
+			}
+			fclose(fpr);
+			return 0;
+		}
 
