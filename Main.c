@@ -19,6 +19,7 @@ void createNewAcc(int choice);
 void newSavingacc(struct newUserAcc *newuser);
 int findDuplicate(char *searchstr);
 void checkUdetails();
+void userDashboard(char *number, char *name);
 
    
     int firstchoice;
@@ -289,7 +290,8 @@ void checkUdetails()
         }
         else
         {
-            printf("\n\t\t\t Login Successful!!!\n");    
+            printf("\n\t\t\t Login Successful!!!\n");   
+            userDashboard(tempAccno,tempAccname); 
         }
         
     } while(found == 0);
@@ -300,3 +302,26 @@ void checkUdetails()
 	
 	fclose(fpr);
 	}		
+void userDashboard(char *number, char *name)
+	{
+		
+    printf("\n\n");
+    printf("\t\t==========================================\n");
+    printf("\t\t         USER DASHBOARD           \n");
+    printf("\t\t==========================================\n");
+	
+	printf("\n");
+    printf("\t\t\tHELLO %s\n",name);
+    printf("\t\t\tThis is your account number:%s\n",number);
+	printf("\t\t==========================================\n");
+    printf("\n");
+    printf("\t\t  1. Check Balance                        \n");
+    printf("\t\t  2. Deposit Money                        \n");
+    printf("\t\t  3. Withdraw Money                       \n");
+    printf("\t\t  4. Transfer Funds (Account to Account)  \n");
+    printf("\t\t  5. View Transaction History             \n");
+    printf("\t\t  6. Change Password                      \n");
+    printf("\t\t  7. Logout                               \n");
+    printf("\t\t------------------------------------------\n");
+    printf("\n\t\t  Select an option: ");	
+	}	
