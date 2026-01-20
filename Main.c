@@ -18,11 +18,16 @@ void maininterface(int choice);
 void createNewAcc(int choice);
 void newSavingacc(struct newUserAcc *newuser);
 int findDuplicate(char *searchstr);
+void checkUdetails();
 
    
     int firstchoice;
     int Create_acc_choice;
     struct newUserAcc newuser;
+	char checkUname[50];
+	char checkUpassword[50];
+	char buffer[255];
+	char tempUname[50],tempUpass[50],tempAccno[50],tempAccname[50],tempUnic[50];
 
 int main()
 {
@@ -56,7 +61,7 @@ void maininterface(int choice)
             createNewAcc(Create_acc_choice);
             break;
             case 2:
-            printf("user login");
+			checkUdetails();
             break;
             case 3:
             printf("Admin login");
@@ -233,4 +238,65 @@ void newSavingacc(struct newUserAcc *newuser)
 			fclose(fpr);
 			return 0;
 		}
+void checkUdetails()
+	{
+		
+		int found = 0;
+		FILE *fpr;
+		fpr=fopen("accDetails.txt","r");
+	
+		if(fpr==NULL)
+		{
+			printf("flie cannot open!!");
+		return;
+		}
+		
+	printf("\n\n");
+    printf("\t\t==========================================\n");
+    printf("\t\t               USER LOGIN                 \n");
+    printf("\t\t==========================================\n");
+    printf("\n");
+    printf("\t\t      Please enter your Details   \n");
+    printf("\n");
+	
+	do {
+		
+        printf("\n");
+        printf("\t\t      Username :");
+        scanf("%s", checkUname);
+        printf("\n");
+        printf("\t\t      Password :");
+        scanf("%s", checkUpassword);
+        
+        
+        rewind(fpr);
+		fgets(buffer, 255, fpr);
+        
+       
+        while(fscanf(fpr, "%s %s %s %s %s",tempAccno,tempUname, tempUpass,tempAccname,tempUnic) != EOF)
+        {
+            
+            if(strcmp(checkUname, tempUname) == 0 && strcmp(checkUpassword, tempUpass) == 0)
+            {
+                found = 1;
+                break; 
+            }
+        }
 
+        if(found == 0)
+        {
+            printf("\n\t\t Invalid Username or Password! Try again.\n\n");
+        }
+        else
+        {
+            printf("\n\t\t\t Login Successful!!!\n");    
+        }
+        
+    } while(found == 0);
+    
+    printf("\n");
+    printf("\t\t==========================================\n");
+	
+	
+	fclose(fpr);
+	}		
